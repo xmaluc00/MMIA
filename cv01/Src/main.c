@@ -15,10 +15,11 @@ int main(void)
 
 	for (;;){
 
-		for(uint8_t i = 0;i<31;i++){
+		for(uint8_t i = 0; i < 31; i++){
 
 			if (pole & (1 << i)) GPIOA->BSRR = (1<<5);			// smer irelevantni, zleva doprava (pole & (0x8000 >> i))
 			else GPIOA->BRR = (1<<5);
+			for (volatile uint32_t j = 0; j < 100000; j++) {}
 
 		}
 
