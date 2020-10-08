@@ -47,7 +47,7 @@ int main(void)
 
 	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
 
-	SysTick_Config(8000); // 1ms
+	SysTick_Config(8000);
 
 //	SYSCFG->EXTICR[0] |= SYSCFG_EXTICR1_EXTI0_PC; // select PC0 for EXTI0
 //	EXTI->IMR |= EXTI_IMR_MR0; // mask
