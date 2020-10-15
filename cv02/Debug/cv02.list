@@ -270,7 +270,6 @@ void EXTI0_1_IRQHandler(void)
 {
  800022c:	b580      	push	{r7, lr}
  800022e:	af00      	add	r7, sp, #0
-
 	if (EXTI->PR & EXTI_PR_PR0) { // check line 0 has triggered the IT
  8000230:	4b09      	ldr	r3, [pc, #36]	; (8000258 <EXTI0_1_IRQHandler+0x2c>)
  8000232:	695b      	ldr	r3, [r3, #20]
@@ -292,7 +291,6 @@ void EXTI0_1_IRQHandler(void)
  800024e:	404a      	eors	r2, r1
  8000250:	615a      	str	r2, [r3, #20]
 	}
-
 }
  8000252:	46c0      	nop			; (mov r8, r8)
  8000254:	46bd      	mov	sp, r7
@@ -360,7 +358,7 @@ void blikac(void)
  80002b0:	2000001c 	.word	0x2000001c
 
 080002b4 <main>:
-	}
+
 }
 
 

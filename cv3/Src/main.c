@@ -9,9 +9,15 @@ int main(void)
 {
 
 	sct_init();
-	svt_led(0x7A5C36DE);
+	sct_led(0x7A5C36DE);
+	for (volatile uint32_t j = 0; j < 3000000; j++) {}
 
 	for (;;){
+
+		for (volatile uint32_t i = 0; i < 1000; i += 111) {
+			sct_value(i);
+			for (volatile uint32_t j = 0; j < 500000; j++) {}
+		}
 
 	}
 
