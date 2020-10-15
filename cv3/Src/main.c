@@ -10,6 +10,7 @@ int main(void)
 
 	sct_init();
 	sct_led(0x7A5C36DE);
+
 	for (volatile uint32_t j = 0; j < 3000000; j++) {}
 
 	for (;;){
