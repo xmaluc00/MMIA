@@ -116,6 +116,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
 	  sct_value(raw_pot * 500 / 4096, raw_pot * 9 / 4096);
   }
   /* USER CODE END 3 */
