@@ -22,7 +22,7 @@ void sct_led (uint32_t value) {
 void sct_init (void) {
 
 
-	HAL_GPIO_WritePin(SCT_LED_GPIO_Port, SCT_LED_Pin, 0);
+	sct_led(0);
 	HAL_GPIO_WritePin(SCT_NOE_GPIO_Port, SCT_NOE_Pin, 0);
 
 }
@@ -93,6 +93,6 @@ void sct_value (uint16_t value, uint8_t led) {
 	reg |= reg_values[2][value/1%10];
 	reg |= reg_values[3][led];
 
-	HAL_GPIO_WritePin(SCT_LED_GPIO_Port, SCT_LED_Pin, reg);
+	sct_led(reg);
 
 }

@@ -46,8 +46,8 @@ cv03\ b.bin \
 all: cv03\ b.elf secondary-outputs
 
 # Tool invocations
-cv03\ b.elf: $(OBJS) $(USER_OBJS) C:\Users\pavelm\Documents\xmaluc00\MKS\cv03\ b\STM32F030R8TX_FLASH.ld
-	arm-none-eabi-gcc -o "cv03 b.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\Users\pavelm\Documents\xmaluc00\MKS\cv03 b\STM32F030R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="cv03 b.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+cv03\ b.elf: $(OBJS) $(USER_OBJS) C:\Users\jarvis\Documents\xmaluc00\MKS\MMIA\cv03\ b\STM32F030R8TX_FLASH.ld
+	arm-none-eabi-gcc -o "cv03 b.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\Users\jarvis\Documents\xmaluc00\MKS\MMIA\cv03 b\STM32F030R8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="cv03 b.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
