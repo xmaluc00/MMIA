@@ -45,6 +45,7 @@ UART_HandleTypeDef huart2;
 DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
+#define EEPROM_ADDR 0xA0
 #define CMD_BUFFER_LEN 64
 #define RX_BUFFER_LEN 64
 static uint8_t uart_rx_buf[RX_BUFFER_LEN];
@@ -100,10 +101,46 @@ static void uart_process_command(char *cmd)
 
 		strcpy(str, status1);
 		strcat(str, status2);
-		strcat(str, "/n");
+		strcat(str, "\n");
 
 		printf(str);
 	}
+
+	else if (strcasecmp(token, "READ") == 0){
+		token = strtok(NULL, " ");
+
+		uint16_t addr = atoi(token);
+		uint8_t value;
+
+		HAL_I2C_Mem_Read(&hi2c1, EEPROM_ADDR, addr, I2C_MEMADD_SIZE_16BIT, &value, 1, 1000);
+
+		printf("Adresa 0x%04X = 0x%02X\n", addr, value);
+	}
+
+	else if (strcasecmp(token, "WRITE") == 0){
+
+		token = strtok(NULL, " ");
+		uint16_t addr = atoi(token);
+		token = strtok(NULL, " ");
+		uint8_t value = atoi(token);
+
+		HAL_I2C_Mem_Write(&hi2c1, EEPROM_ADDR, addr, I2C_MEMADD_SIZE_16BIT, &value, 1, 1000);
+		while (HAL_I2C_IsDeviceReady(&hi2c1, EEPROM_ADDR, 300, 1000) == HAL_TIMEOUT) {}
+	}
+
+	else if (strcasecmp(token, "DUMP") == 0){
+
+		uint8_t value;
+
+		for (uint16_t i = 0x0000; i <= 0x000F; i++){
+
+			HAL_I2C_Mem_Read(&hi2c1, EEPROM_ADDR, i, I2C_MEMADD_SIZE_16BIT, &value, 1, 1000);
+			printf("Adresa 0x%04X = 0x%02X ", i, value);
+
+		}
+
+	}
+
 
 	else {
 		printf("Neznamy prikaz\n");
