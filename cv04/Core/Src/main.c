@@ -172,12 +172,12 @@ int main(void)
 	  if (HAL_GetTick() > delay + 1000) state == SHOW_POT;
 
 	  // cti S2
-	  if(HAL_GPIO_ReadPin(S2_GPIO_Port GPIOC, S2_Pin GPIO_PIN_0) == 0)
+	  if(HAL_GPIO_ReadPin(S2_GPIO_Port, S2_Pin) == 0)
 	  {
 		  state = SHOW_TEMP;
 	  }
 	  // cti S1
-	  else if(HAL_GPIO_ReadPin(S1_GPIO_Port GPIOC, S1_Pin GPIO_PIN_1) == 0)
+	  else if(HAL_GPIO_ReadPin(S1_GPIO_Port, S1_Pin) == 0)
 	  {
 		  state = SHOW_VOLT;
 	  }
