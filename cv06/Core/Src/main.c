@@ -126,6 +126,9 @@ static const int16_t ntc_lookup[] = {
 
 };
 
+static enum { NTC, DS18B20 } state = NTC;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -134,6 +137,61 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC_Init(void);
 /* USER CODE BEGIN PFP */
+
+void cidla(void){
+
+	//static enum { NTC, DS18B20 } state = NTC;
+	static uint32_t delay_cidla;
+
+	if (state == NTC){
+
+		OWConvertAll();
+		HAL_Delay(CONVERT_T_DELAY);
+		int16_t temp_18b20;
+		OWReadTemperature(&temp_18b20);
+
+		if (HAL_GetTick() > delay_cidla + 750){							//posílání na displej v intervalech min. 750 ms
+
+			sct_value(temp_18b20 / 10);
+			delay_cidla = HAL_GetTick();
+		}
+
+	}
+
+	if (state == DS18B20){
+
+		if (HAL_GetTick() > delay_cidla + 750){
+
+			sct_value(ntc_lookup[HAL_ADC_GetValue(&hadc)]);				//posílání na displej v intervalech min. 750 ms
+			delay_cidla = HAL_GetTick();
+		}
+
+	}
+
+
+
+}
+
+void tlacitka(void){
+
+	static uint32_t delay_tlacitka;
+
+	if((HAL_GPIO_ReadPin(S2_GPIO_Port, S2_Pin) == 0) || (HAL_GetTick() > delay_tlacitka + 40)){	//cti S2
+
+		state = NTC;
+		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
+		delay_tlacitka = HAL_GetTick();
+	}
+
+	else if((HAL_GPIO_ReadPin(S1_GPIO_Port, S1_Pin) == 0) || (HAL_GetTick() > delay_tlacitka + 40)){	//cti S1
+
+		state = DS18B20;
+		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 1);
+		delay_tlacitka = HAL_GetTick();
+	}
+
+
+}
 
 
 /* USER CODE END PFP */
@@ -183,23 +241,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
+while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	cidla();
+	tlacitka();
 
-/*	  OWConvertAll();
-	  HAL_Delay(CONVERT_T_DELAY);
-
-	  int16_t temp_18b20;
-	  OWReadTemperature(&temp_18b20);
-
-	  sct_value(temp_18b20 / 10);
-*/
-
-	  sct_value(ntc_lookup[HAL_ADC_GetValue(&hadc)]);
-	  HAL_Delay(500);
 
   }
   /* USER CODE END 3 */
