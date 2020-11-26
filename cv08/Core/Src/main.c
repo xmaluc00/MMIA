@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <string.h>
 
 /* USER CODE END Includes */
 
@@ -50,7 +51,7 @@ UART_HandleTypeDef huart3;
 static volatile int8_t key = -1;
 static volatile uint32_t old_time = 0;
 static volatile uint32_t new_time = 0;
-static volatile uint8_t index = 0;
+static volatile uint8_t i = 0;
 static volatile uint16_t prodleva = 500;
 static const int kod = { 7, 9, 3, 2, 12 };
 static int pole[5];
@@ -164,8 +165,8 @@ int main(void)
 
 	  uint8_t n = memcmp(pole, kod, sizeof(kod));
 
-	  if (index == 5 && n == 0){HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);index = 0;}
-	  else if (index == 5 && n != 0){index = 0;}
+	  if (i == 5 && n == 0){HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);i = 0;}
+	  else if (i == 5 && n != 0){i = 0;}
 
 
 	  if (key != -1){
@@ -174,16 +175,16 @@ int main(void)
 
 		  if (new_time < old_time + prodleva){
 
-			  pole[index] = key;
-			  index++;
+			  pole[i] = key;
+			  i++;
 
 		  }
 
 		  else {
 
-			  index = 0;
-			  pole[index] = key;
-			  index++;
+			  i = 0;
+			  pole[i] = key;
+			  i++;
 
 		  }
 
