@@ -48,6 +48,12 @@ UART_HandleTypeDef huart3;
 /* USER CODE BEGIN PV */
 
 static volatile int8_t key = -1;
+static volatile uint32_t old_time = 0;
+static volatile uint32_t new_time = 0;
+static volatile uint8_t index = 0;
+static volatile uint16_t prodleva = 500;
+static const int kod = { 7, 9, 3, 2, 12 };
+static int pole[5];
 
 /* USER CODE END PV */
 
@@ -147,6 +153,8 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim3);
 
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -154,11 +162,32 @@ int main(void)
   while (1)
   {
 
-	  //HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
-	  //HAL_Delay(250);
+	  uint8_t n = memcmp(pole, kod, sizeof(kod));
+
+	  if (index == 5 && n == 0){HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);index = 0;}
+	  else if (index == 5 && n != 0){index = 0;}
+
 
 	  if (key != -1){
-		  printf("stisknuto: %d\n", key);
+
+		  new_time = HAL_GetTick();
+
+		  if (new_time < old_time + prodleva){
+
+			  pole[index] = key;
+			  index++;
+
+		  }
+
+		  else {
+
+			  index = 0;
+			  pole[index] = key;
+			  index++;
+
+		  }
+
+		  old_time = new_time;
 		  key = -1;
 	  }
 
