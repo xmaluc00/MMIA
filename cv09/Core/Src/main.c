@@ -94,6 +94,8 @@ void circle(uint8_t radius){
 
 	}
 
+	return;
+
 }
 
 
@@ -126,6 +128,8 @@ void arc(uint8_t radius){
 
 	}
 
+	return;
+
 }
 
 
@@ -144,6 +148,8 @@ void smile(){	// pro presnou kresbu je nutne dodat body pocatecnich bodu a uhlu 
 
 	step(0, -40, 1);
 	HAL_Delay(USBD_HID_GetPollingInterval(&hUsbDeviceFS));
+
+	return;
 
 }
 
