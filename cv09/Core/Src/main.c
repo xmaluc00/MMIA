@@ -35,6 +35,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define PI 3.14159265358979323846
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -47,6 +49,50 @@ UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
 extern USBD_HandleTypeDef hUsbDeviceFS;
+
+void step(int8_t x, int8_t y, int8_t btn){
+
+	uint8_t buff[4];
+
+	buff[0] = &btn; // stiskni leve tlacitko
+	buff[1] = x; // posun X +10
+	buff[2] = y; // posun Y -3
+	buff[3] = 0; // bez scrollu
+
+	USBD_HID_SendReport(&hUsbDeviceFS, buff, sizeof(buff));
+
+	return;
+}
+
+void circle(uint8_t radius){
+
+	int8_t new_x = 0;
+	int8_t new_y = 0;
+	float x = 0;
+	float y = 0;
+
+	uint8_t i;
+
+	uint8_t buff[4];
+	buff[0] = 0x01;
+
+	for (i = 0; i <= 2*PI; i + 2*PI/50){
+
+		buff[1] = new_x; // posun X
+		buff[2] = new_y; // posun Y
+		buff[3] = 0; // bez scrollu
+
+		USBD_HID_SendReport(&hUsbDeviceFS, buff, sizeof(buff));
+
+		x = radius * cos(i);
+		y = radius * sin(i);
+
+		new_x = (int8_t)(x)-new_x;
+		new_y = (int8_t)(y)-new_y;
+
+	}
+
+}
 
 /* USER CODE END PV */
 
